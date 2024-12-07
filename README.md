@@ -10,5 +10,7 @@ an API for implementing the stream interface.
 3. `Duplex`: Streams that are both `Readable` and `Writable`, Example: net.Socket class
 4. `Transform`: Duplex streams that can be modify or transform the data as it is wriiten and read, Example: zlib.createDeflate()
 
-### Streams Promises API:
 
+### Prerequsites: Buffer
+`Buffer is a location in memory that holds specific amount of data.`
+![Buffer is a location in memory that holds specific amount of data.](./public/images/bufferExample.png)
