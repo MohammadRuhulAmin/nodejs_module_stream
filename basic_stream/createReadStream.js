@@ -18,11 +18,11 @@ class ReadStream{
             }
         })
         streamWrite.on('drain',()=>streamRead.resume())
-        streamRead.on('close',()=>{
+        streamRead.on('end',()=>{
             fileHandleRead.close()
             console.log(`${this.filepathRead} has been closed!`)
         })
-        streamWrite.on('finish',()=>{
+        streamWrite.on('end',()=>{
             fileHandleWrite.close()
             console.log(`${this.filepathWrite} has been closed!`)
         })

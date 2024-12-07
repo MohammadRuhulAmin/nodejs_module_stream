@@ -1,3 +1,7 @@
 *.txt
 /node_modules
 *.pdf
+*.tar
+*.gz
+*.mp4
+/public
