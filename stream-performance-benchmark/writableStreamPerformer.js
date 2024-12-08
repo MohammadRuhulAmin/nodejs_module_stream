@@ -127,8 +127,14 @@ class writableStreamPerformer{
                         bufferCount = 0;
                     }
                     
+                    /**
+                     * stream.writableNeedDrain [True | False]
+                     * True: when backpressure trigger or writableLength >= writableHighWaterMark or stream.write() => false
+                     * False: when writableLength < writableHighWaterMark
+                     */
                     /*console.log(`is empty?: ${stream.write(buffer)}`)*/
                     if(stream.write(buffer) === false) {
+                        console.log("writableNeedDrain ",stream.writableNeedDrain)
                         console.log(`Back pressure trigger, the length of writableHighWaterMark: ${stream.writableLength}`)
                         break;
                     }
@@ -139,6 +145,7 @@ class writableStreamPerformer{
             producer()
             stream.on('drain',()=>{
                  // console.log('drain event emitted')
+                 console.log(`After drain emitted, the writableHighWaterMark of a buffer: ${stream.writableHighWaterMark}`)
                  console.log(`After drain emitted, the writable length of a buffer: ${stream.writableLength}`)
                 producer()
                 
