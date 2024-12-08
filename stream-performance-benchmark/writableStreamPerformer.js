@@ -76,6 +76,8 @@ class writableStreamPerformer{
             .finally(()=>{console.log('file has been closed...')})   
         }
     }
+
+    /** comment the print methods to get perfect process time */
     /** process time: 1.75 sec, memory usage: 19MB  */
     async writeStreamProcessStreamMemoryEficientPromiseAPI(){
         let fileHandle;
@@ -108,26 +110,42 @@ class writableStreamPerformer{
             /** To implement stream.writableLength < stream.writableHighWaterMark we will use drain event */
             /** Always use it for memory efficient and fast performance  */
             let i = 0;
+            const flushInterval = 5;
+            let bufferCount = 0;
             const producer = ()=>{
                 while(i<this.iteration){
+                    
+                    if(bufferCount === 0)stream.cork()
                     const buffer = Buffer.from(` ${i} `,'utf-8')
                     /**console.log(buffer.toString()) */
                     if(this.iteration - 1 === i){
                         return stream.end(buffer)
                     }
-        
+                    if(bufferCount === flushInterval){
+                        stream.uncork();
+                        console.log('After uncork writable length: ',stream.writableLength )
+                        bufferCount = 0;
+                    }
                     
                     /*console.log(`is empty?: ${stream.write(buffer)}`)*/
-                    if(stream.write(buffer) === false) break;
+                    if(stream.write(buffer) === false) {
+                        console.log(`Back pressure trigger, the length of writableHighWaterMark: ${stream.writableLength}`)
+                        break;
+                    }
                     i++;
+                    bufferCount++;
                 }
             }
             producer()
             stream.on('drain',()=>{
                  // console.log('drain event emitted')
+                 console.log(`After drain emitted, the writable length of a buffer: ${stream.writableLength}`)
                 producer()
                 
             })
+            stream.on('error',(err)=>{console.log(err.message)})
+
+            /** This finish event will be emitted after successful stream.end() function execution */
             stream.on('finish',()=>{
                 console.timeEnd('writeStreamProcessStreamMemoryEficientPromiseAPI')
                 // fsPromise.unlink(this.filePath).then(()=>{console.log(`File deleted successfully...`)})
@@ -136,9 +154,9 @@ class writableStreamPerformer{
             })
 
             /** It will be emitted when fileHandle.close() executes successfully */
-            // stream.on('close',()=>{
-            //     console.log("fileHandle.close() has been executed successfully!")
-            // })
+            stream.on('close',()=>{
+                console.log("fileHandle.close() has been executed successfully!")
+            })
 
             /** The amount of bytes inside a buffer after insert is 12 */
             console.log(stream.writableLength)
