@@ -148,7 +148,6 @@ class writableStreamPerformer{
                  console.log(`After drain emitted, the writableHighWaterMark of a buffer: ${stream.writableHighWaterMark}`)
                  console.log(`After drain emitted, the writable length of a buffer: ${stream.writableLength}`)
                 producer()
-                
             })
             stream.on('error',(err)=>{console.log(err.message)})
 
@@ -157,14 +156,12 @@ class writableStreamPerformer{
                 console.timeEnd('writeStreamProcessStreamMemoryEficientPromiseAPI')
                 // fsPromise.unlink(this.filePath).then(()=>{console.log(`File deleted successfully...`)})
                 fileHandle?.close().then(()=>{console.log('file closed...')})
-                
             })
 
             /** It will be emitted when fileHandle.close() executes successfully */
             stream.on('close',()=>{
                 console.log("fileHandle.close() has been executed successfully!")
             })
-
             /** The amount of bytes inside a buffer after insert is 12 */
             console.log(stream.writableLength)
         }catch(error){console.error(error.message)}   
