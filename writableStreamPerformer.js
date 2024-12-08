@@ -74,19 +74,25 @@ class writableStreamPerformer{
             fileHandle.close().finally(()=>{console.log('file has been closed...')})   
         }
     }
+    /** process time: 20 ms, memory usage: 19MB  */
     async writeStreamProcessStreamMemoryEficientPromiseAPI(){
         let fileHandle;
         try{
             fileHandle = await fsPromise.open(this.filePath,this.operation)
             const stream = fileHandle.createWriteStream();
-            
+            console.time('writeStreamProcessStreamMemoryEficientPromiseAPI')
             /** The writableHighWaterMark property of a writable stream in Node.js represents the maximum number of bytes that 
             can be written to the internal buffer before the stream starts applying backpressure. */
-            console.log(stream.writableHighWaterMark)
+            /* console.log(stream.writableHighWaterMark) */
             /** The amount of bytes inside a buffer before insert is 0 */
-            console.log(stream.writableLength) 
-            const buffer = Buffer.from('this is text','utf-8')
-
+            console.log(`The amount of bytes of a buffer: ${stream.writableLength}`) 
+            /**
+             * 8bits = 1 byte
+             * 1000 bytes = 1 Kilobyte
+             * 1000 Kilobytes = 1 megabyte
+             */
+            const buffSize = stream.writableHighWaterMark
+            // console.log(`Is write possible: ${stream.write(buffer)}`)/** return type True | False */
             /** Return False: The stream's internal buffer has accumulated more data than the writableHighWaterMark, 
              * at This point the stream signals backpressure, indicating that you should pause writing until the buffer
              * is drained...
@@ -96,14 +102,39 @@ class writableStreamPerformer{
              * than the consumer (e.g., the file system or network) 
              * can process it, the buffer fills up, and stream.write() starts returning false.
              */
-            console.log(stream.write(buffer)) /** return type True | False */
 
+            /** To implement stream.writableLength < stream.writableHighWaterMark we will use drain event */
+            /** Always use it for memory efficient and fast performance  */
+            let i = 0;
+            const producer = ()=>{
+                while(i<this.iteration){
+                    const buffer = Buffer.from(`${i}`,'utf-8')
+                    /**console.log(buffer.toString()) */
+                    if(this.iteration - 1 === i){
+                        return stream.end(buffer)
+                    }
+                    
+                    stream.write(buffer)
+                    /*console.log(`is empty?: ${stream.write(buffer)}`)*/
+                    if(stream.write(buffer) === false) break;
+                    i++;
+                }
+            }
+            producer()
+            stream.on('drain',()=>{
+                /**console.log('drain event emitted') */
+                producer()
+                
+            })
+            stream.on('finish',()=>{
+                console.timeEnd('writeStreamProcessStreamMemoryEficientPromiseAPI')
+                fileHandle?.close().then(()=>{console.log('file closed...')})
+            })
+            
             /** The amount of bytes inside a buffer after insert is 12 */
             console.log(stream.writableLength)
-        }catch(error){console.log(error.message)}
-        finally{
-            fileHandle.close().then(()=>{console.log('file closed...')})
-        }
+        }catch(error){console.error(error.message)}
+        
     }
 
 
@@ -113,4 +144,4 @@ const s1 = new writableStreamPerformer("./public/files/writeFile.txt",'w',iterat
 // await s1.writeStreamProcessPromiseAPI()
 // s1.writeStreamProcessCallbackAPI()
 // s1.writeStreamProcessStreamPromiseAPI()
-s1.writeStreamProcessStreamMemoryEficientPromiseAPI()
+await s1.writeStreamProcessStreamMemoryEficientPromiseAPI()
