@@ -71,7 +71,9 @@ class writableStreamPerformer{
             console.timeEnd('writeStreamProcessStreamPromiseAPI')
         }catch(error){console.log(error.message)}
         finally{
-            fileHandle.close().finally(()=>{console.log('file has been closed...')})   
+            await fsPromise.unlink(this.filePath).then(()=>console.log(`file deleted successfully`))
+            .then(()=>fileHandle.close())
+            .finally(()=>{console.log('file has been closed...')})   
         }
     }
     /** process time: 20 ms, memory usage: 19MB  */
@@ -128,7 +130,9 @@ class writableStreamPerformer{
             })
             stream.on('finish',()=>{
                 console.timeEnd('writeStreamProcessStreamMemoryEficientPromiseAPI')
+                fsPromise.unlink(this.filePath).then(()=>{console.log(`File deleted successfully...`)})
                 fileHandle?.close().then(()=>{console.log('file closed...')})
+                
             })
             
             /** The amount of bytes inside a buffer after insert is 12 */
@@ -143,5 +147,7 @@ const iteration = 1000000;
 const s1 = new writableStreamPerformer("./public/files/writeFile.txt",'w',iteration)
 // await s1.writeStreamProcessPromiseAPI()
 // s1.writeStreamProcessCallbackAPI()
-// s1.writeStreamProcessStreamPromiseAPI()
+// await s1.writeStreamProcessStreamPromiseAPI()
+
+/** Most performant and memory efficient writable API */
 await s1.writeStreamProcessStreamMemoryEficientPromiseAPI()
