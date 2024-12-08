@@ -76,12 +76,12 @@ class writableStreamPerformer{
             .finally(()=>{console.log('file has been closed...')})   
         }
     }
-    /** process time: 20 ms, memory usage: 19MB  */
+    /** process time: 1.75 sec, memory usage: 19MB  */
     async writeStreamProcessStreamMemoryEficientPromiseAPI(){
         let fileHandle;
         try{
             fileHandle = await fsPromise.open(this.filePath,this.operation)
-            const stream = fileHandle.createWriteStream();
+            const stream =  fileHandle.createWriteStream();
             console.time('writeStreamProcessStreamMemoryEficientPromiseAPI')
             /** The writableHighWaterMark property of a writable stream in Node.js represents the maximum number of bytes that 
             can be written to the internal buffer before the stream starts applying backpressure. */
@@ -110,13 +110,13 @@ class writableStreamPerformer{
             let i = 0;
             const producer = ()=>{
                 while(i<this.iteration){
-                    const buffer = Buffer.from(`${i}`,'utf-8')
+                    const buffer = Buffer.from(` ${i} `,'utf-8')
                     /**console.log(buffer.toString()) */
                     if(this.iteration - 1 === i){
                         return stream.end(buffer)
                     }
+        
                     
-                    stream.write(buffer)
                     /*console.log(`is empty?: ${stream.write(buffer)}`)*/
                     if(stream.write(buffer) === false) break;
                     i++;
@@ -124,30 +124,33 @@ class writableStreamPerformer{
             }
             producer()
             stream.on('drain',()=>{
-                /**console.log('drain event emitted') */
+                 // console.log('drain event emitted')
                 producer()
                 
             })
             stream.on('finish',()=>{
                 console.timeEnd('writeStreamProcessStreamMemoryEficientPromiseAPI')
-                fsPromise.unlink(this.filePath).then(()=>{console.log(`File deleted successfully...`)})
+                // fsPromise.unlink(this.filePath).then(()=>{console.log(`File deleted successfully...`)})
                 fileHandle?.close().then(()=>{console.log('file closed...')})
                 
             })
-            
+
+            /** It will be emitted when fileHandle.close() executes successfully */
+            // stream.on('close',()=>{
+            //     console.log("fileHandle.close() has been executed successfully!")
+            // })
+
             /** The amount of bytes inside a buffer after insert is 12 */
             console.log(stream.writableLength)
-        }catch(error){console.error(error.message)}
-        
+        }catch(error){console.error(error.message)}   
     }
-
-
 }
 const iteration = 1000000;
-const s1 = new writableStreamPerformer("./public/files/writeFile.txt",'w',iteration)
+const s1 = new writableStreamPerformer("../public/files/writeFile.txt",'w',iteration)
 // await s1.writeStreamProcessPromiseAPI()
 // s1.writeStreamProcessCallbackAPI()
 // await s1.writeStreamProcessStreamPromiseAPI()
+
 
 /** Most performant and memory efficient writable API */
 await s1.writeStreamProcessStreamMemoryEficientPromiseAPI()
