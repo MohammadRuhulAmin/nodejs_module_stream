@@ -16,12 +16,13 @@ __prerequisite topic:__
     To identify a Hexadecimal Number = 0x <hex_number>
     Example: 0x456
     Explanation: 
-    6 x 16^0 = 6
-    5 x 16^1 = 80
-    4 x 16^2 = 1024
-    6 + 80 + 1024 = 1110 --> 0x456 
-    calculate fa3c = ?
+    - 6 x 16^0 = 6
+    - 5 x 16^1 = 80
+    - 4 x 16^2 = 1024
+    - 6 + 80 + 1024 = 1110 --> 0x456 
+    - calculate fa3c = ?
 
+    
     ![alt text](./public/image.png)
 
     If the data size is too much large, we can use Hexadecimal data instead of Binary. 
