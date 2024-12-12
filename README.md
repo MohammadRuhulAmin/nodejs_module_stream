@@ -47,4 +47,4 @@ __prerequisite topic:__
     UTF-8 Will convert the first character s  to 0111 0011. You may ask why  "0111 0011" binary? because, UTF-8 will convert  each character
     to 8 bit. secondly the UNICODE of s is 115, and the binary of 115 is  0111 0011, therefore, if we use UTF-8 character encoding it will store "0111 0011" value in the memory. 
 
-![alt text](.public/string.png)
+![alt text](./public/string.png)
