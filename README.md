@@ -48,3 +48,5 @@ __prerequisite topic:__
     to 8 bit. secondly the UNICODE of s is 115, and the binary of 115 is  0111 0011, therefore, if we use UTF-8 character encoding it will store "0111 0011" value in the memory. 
 
 ![alt text](./public/string.png)
+
+- Always Specify The Encoding System
