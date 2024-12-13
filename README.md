@@ -71,4 +71,26 @@ console.log(constants.MAX_LENGTH) /**4294967296 bytes or 4GB */
 Inside a buffer, each index cosumes exactly 8 bits. Once you allocat the size of buffer it will never changed. If you try to 
 insert 36 bits in a buffer, node.js will not allow to insert the last 4 bits inside the buffer. 
 
+
+__How does buffer pull size works?__ 
 ![alt text](./public/bufferpullsize.png)
+
+Buffer will allocate a piece of memory to the RAM or memory for future buffers. 
+to print the poolsize :
+
+```javaScript
+    console.log(Buffer.poolSize) /** this default space can be used if you use Buffer.allocUnsafe(...)
+    and Buffer.from(), Buffer.concat() **/
+```
+
+I can also change the default poolsize from 8kib to 4 kib using right shifiting operator `>>>`
+
+```javaScript
+console.log(Buffer.poolSize) 
+Buffer.poolSize = Buffer.poolSize >>> 1 
+console.log(Buffer.poolSize >>> 1)
+
+```
+So, why Buffer.allocUnsafe() is faster than Buffer.alloc() function? 
+Node.js Already holds 8kib in the RAM or memory, when node.js starts running. When we use allocUnsafe() method,
+it uses the pre specified spaces which does not take time compared to alloc function as it has to allocate in the ram.
