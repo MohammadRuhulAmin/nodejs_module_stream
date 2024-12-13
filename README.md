@@ -15,3 +15,11 @@ Node.js use System calls by the Libuv to contact with operating system. One of m
 Whenever we want to write something to a file, that time node.js use rename() system calls by the libuv and it writes to the hard drive through operating systems.
 
 ![alt text](./public/images/nodejs.png)
+
+
+__How Node.js deals with file?__ 
+
+There are three different things to do exact same thing with the file:
+1. Promises API (most clean )
+2. Callback API (callback API is faster, and memory efficient than Pomises API)
+3. Synchronous API (not to use it)
