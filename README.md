@@ -10,3 +10,6 @@ folder is also file.
 ![alt text](./public/images/file.png)
 
 Now the Point is How Node.js Deals with files ?!
+
+
+![alt text](./public/images/nodejs.png)
