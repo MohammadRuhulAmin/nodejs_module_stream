@@ -50,6 +50,7 @@ __prerequisite topic:__
 
 ![alt text](./public/string.png)
 
+
 - Always Specify The Encoding System
 
 
@@ -94,3 +95,4 @@ console.log(Buffer.poolSize >>> 1)
 So, why Buffer.allocUnsafe() is faster than Buffer.alloc() function? 
 Node.js Already holds 8kib in the RAM or memory, when node.js starts running. When we use allocUnsafe() method,
 it uses the pre specified spaces which does not take time compared to alloc function as it has to allocate in the ram.
+
