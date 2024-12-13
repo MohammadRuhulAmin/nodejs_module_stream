@@ -40,7 +40,7 @@ __prerequisite topic:__
     - Encoder encodes data from meaningful to us to binary data
     - Decoder decodes the encoded data from binary to meaningful to us. 
 
-    Character Encoding: A system of assigning a sequence of bytes (just some zeros and ones) to a character. The mose common one is utf-8,
+    Character Encoding: A system of assigning a sequence of bytes (just some zeros and ones) to a character. The most common one is utf-8,
     defined by the Unicode standard, therefore its characters have the same numbers as the Unicode. 
 
     Lets consider a string = "string"

@@ -5,7 +5,7 @@ import {Buffer} from "node:buffer"
  * In each index there are 8 bits to be allocated
  * 
  */
-const memoryContainer = Buffer.alloc(4)
+const memoryContainer = Buffer.alloc(4) /** allocate 4 bytes */
 console.log(memoryContainer) /** print <Buffer 00 00 00 00> this represents hexadecimal format  */
 
 /** In each index minimum value 0 and maximum 255 in decimal representation can hold */
@@ -22,6 +22,12 @@ console.log(memoryContainer[3])
 
 console.log(memoryContainer.toString('hex'))
 
-
+/** from method will automatically allocate bytes */
 const buff = Buffer.from([0x48,0x69,0x21])
 console.log(buff.toString())
+/**https://symbl.cc */
+const buff2 = Buffer.from("E29E9C","hex") 
+console.log(buff2.toString("utf-8"))
+
+const buff3 = Buffer.from("E29FBE","hex")
+console.log(buff3.toString())
