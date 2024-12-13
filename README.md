@@ -2,7 +2,7 @@ __Buffer in Node.js__
 `Buffer is a Container in Memory`. It is very similer to array, means a data stracture. Means they have index also. 
 A Buffer handles the binary data. The http or fs module uses buffers internally for network or file operations.
 Network Request, I/O or file Reading and writting are all zeros and ones. Buffer helps node.js to deal with network requests.
-send data to other processes. for database communication, buffer plays an important role. 
+send data to other processes. for database communication,therefore buffer plays an important role. 
 
 
 __prerequisite topic:__
@@ -32,7 +32,7 @@ __prerequisite topic:__
     to those characters.
     - Unicode : A standard for representing and encoding characters in most of the writing system worldwide.
     - ASCII : It defines 128 characters, lowercase and uppercase of letters a-z, numbers from 0-9, puntuations [$,!.@...]
-    and some control characters like DEL (Delete) for English language
+    and some control characters like DEL (Delete) for English language. 
 
     `ASCII is a subset of UNICODE`
 
@@ -56,7 +56,19 @@ __prerequisite topic:__
 __Buffer :__
 As we said in the beginning of the document, buffer is similer to an Array. 
 
+```javaScript
+
+const buff = Buffer.alloc(1e9) /** allocating 1 GB = 1, 000, 000, 000 Mega Bytes spaces in the RAM or memory*/
+for(let i = 0;i<buff.length;i++) buff[i] = 0x22;
+/*or */
+buff.fill(0x22)
+
+console.log(constants.MAX_LENGTH) /**4294967296 bytes or 4GB */
+```
+
 ![alt text](./public/buffer.png) 
 
 Inside a buffer, each index cosumes exactly 8 bits. Once you allocat the size of buffer it will never changed. If you try to 
 insert 36 bits in a buffer, node.js will not allow to insert the last 4 bits inside the buffer. 
+
+![alt text](./public/bufferpullsize.png)

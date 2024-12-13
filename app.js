@@ -1,4 +1,4 @@
-import {Buffer} from "node:buffer"
+import {Buffer,constants} from "node:buffer"
 
 /**
  * By allocating the size 4 of the buffer will be 4 byte or 4*8 = 32 bits
@@ -31,3 +31,4 @@ console.log(buff2.toString("utf-8"))
 
 const buff3 = Buffer.from("E29FBE","hex")
 console.log(buff3.toString())
+console.log(constants.MAX_LENGTH) /**4294967296 bytes or 4GB */
