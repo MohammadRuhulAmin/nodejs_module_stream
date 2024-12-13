@@ -10,6 +10,8 @@ folder is also file.
 ![alt text](./public/images/file.png)
 
 Now the Point is How Node.js Deals with files ?!
+Node.js use System calls by the Libuv to contact with operating system. One of method is open() in System calls. Using this open system calls, the operating system will go to that hard drive, get the binary code from the hard drive, and return it to operating systems, and finally the operating system return it to nodejs application. 
 
+Whenever we want to write something to a file, that time node.js use rename() system calls by the libuv and it writes to the hard drive through operating systems.
 
 ![alt text](./public/images/nodejs.png)
