@@ -1,3 +1,3 @@
 import * as fs from "node:fs"
-
-console.log(fs)
+const content = fs.readFileSync('../public/files/text.txt')
+console.log(content.toString())
