@@ -1,3 +1,4 @@
+
 import * as fsPromise from "node:fs/promises"
 
 /**
@@ -9,9 +10,14 @@ import * as fsPromise from "node:fs/promises"
  */
 
 (async ()=>{
-    /** commands */
-    const CREATE_FILE = "create a file"
     
+    /** commands **/
+    const CREATE_FILE = "create a file"
+    const DELETE_FILE = "delete a file"
+    const RENAME_FILE = "rename the file"
+    const ADD_TO_FILE = "add to the file"
+
+    /** APIs */
     const createFile = async(path)=>{
         let existingFileHandle,newFileHandle;
         try{
@@ -24,8 +30,43 @@ import * as fsPromise from "node:fs/promises"
             existingFileHandle?.close()
             newFileHandle?.close()
         }
-
     }
+    const deleteFile = async(path)=>{
+        let existingFileHandle;
+        try{
+            existingFileHandle =await fsPromise.open(path,'r')
+            await fsPromise.unlink(path)
+            console.log('File Deleted Successfully')
+        }catch(error){
+            console.log(`${path}, file does not exist.`)
+        }finally{
+            existingFileHandle?.close()
+        }
+    }
+    const renameFile = async (oldPath,newPath)=>{
+        console.log("called")
+        let renameFileHandler;
+        try{
+            renameFileHandler = await fsPromise.rename(oldPath,newPath)
+            console.log(`${oldPath} renamed to ${newPath} successfully!`)
+        }catch(error){
+            console.log(`No file found in ${oldPath} this name.`)
+        }finally{
+           await renameFileHandler?.close()
+        }
+    }
+    const addToFile = async(path,content)=>{
+        let appendFileHandle;
+        try{
+            appendFileHandle = await fsPromise.appendFile(path,content)
+            console.log(`Appended successfully!`)
+        }catch(error){
+            console.error(error.message)
+        }finally{
+           await appendFileHandle?.close()
+        }
+    }
+
     
     const commandFilehandler = await fsPromise.open("./files/command.txt",'r') 
     commandFilehandler.on('change',async()=>{
@@ -47,12 +88,28 @@ import * as fsPromise from "node:fs/promises"
         console.log(buffer.toString('utf-8'))
         const command = buffer.toString()
         if(command.includes(CREATE_FILE)){
-            
             const filePath = command.substring(CREATE_FILE.length + 1)
             createFile(filePath)
         }
-
-        
+        if(command.includes(DELETE_FILE)){
+            const filePath = command.substring(DELETE_FILE.length + 1)
+            deleteFile(filePath) 
+        }
+        if(command.includes(RENAME_FILE)){
+            const _idx = command.indexOf(" to ")
+            const oldFilePath = command.substring(RENAME_FILE.length + 1, _idx)
+            const newFilePath = command.substring(_idx + 4)
+            renameFile(oldFilePath,newFilePath)
+        }
+        if(command.includes(ADD_TO_FILE)){
+            const _idx = command.indexOf(" this content: ")
+            const filePath = command.substring(ADD_TO_FILE.length + 1, _idx)
+            const content = command.substring(_idx + 15)
+            addToFile(filePath,content)
+        }
+        else{
+            console.log('No API found for this Command')
+        }
     })
     /** This will just assign a file discriptor in memory 
     sothat we can read/ write in later. */
@@ -62,7 +119,6 @@ import * as fsPromise from "node:fs/promises"
     /** Here watcher is an async iterator */
     for await (const event of watcher){
         if(event.eventType === "change" && event.filename === "command.txt"){
-            console.log(event)
             commandFilehandler.emit("change")
         }
     }
