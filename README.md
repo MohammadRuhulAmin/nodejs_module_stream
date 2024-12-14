@@ -23,3 +23,8 @@ There are three different things to do exact same thing with the file:
 1. Promises API (most clean )
 2. Callback API (callback API is faster, and memory efficient than Pomises API)
 3. Synchronous API (not to use it)
+
+
+
+When you are writing something to a file, it will not save in your hard drive direcly, until you press Ctrl + S, it 
+will be stored in memory. 
