@@ -11,7 +11,7 @@ import * as fsPromise from "node:fs/promises"
 (async ()=>{
     const commandFilehandler = await fsPromise.open("./files/command.txt",'r') 
     commandFilehandler.on('change',async()=>{
-    
+        
         console.log('file changed!')
         /*
         const content = await commandFilehandler.read() // here the default buffer with a big allocation 
@@ -23,11 +23,12 @@ import * as fsPromise from "node:fs/promises"
         const buffer = Buffer.alloc(size)
         /** the location at which we want to start filling our buffer */
         const offset = 0
-        const position = 0
+        const position =0 /** position of the string index in the file */
         /** how many bytes we ant to read */
         const length = buffer.byteLength
         await commandFilehandler.read(buffer,offset,length,position)
-        console.log(buffer.toString("utf-8"))
+
+
         
     })
     /** This will just assign a file discriptor in memory 
