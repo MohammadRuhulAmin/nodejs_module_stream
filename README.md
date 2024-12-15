@@ -96,3 +96,5 @@ So, why Buffer.allocUnsafe() is faster than Buffer.alloc() function?
 Node.js Already holds 8kib in the RAM or memory, when node.js starts running. When we use allocUnsafe() method,
 it uses the pre specified spaces which does not take time compared to alloc function as it has to allocate in the ram.
 
+Note: length is the number of elements in the array, byteLength is the number of bytes that those elements take up.
+
