@@ -55,10 +55,14 @@ import * as fsPromise from "node:fs/promises"
            await renameFileHandler?.close()
         }
     }
+
     const addToFile = async(path,content)=>{
+        let contentAdded;
+        if(contentAdded === content)return;
         let appendFileHandle;
         try{
             appendFileHandle = await fsPromise.appendFile(path,content)
+            contentAdded = content
             console.log(`Appended successfully!`)
         }catch(error){
             console.error(error.message)
