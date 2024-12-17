@@ -9,6 +9,7 @@ A MIME type is usually in the form of two parts:
 - **Subtype**: More specific description of the content within the type (e.g., `plain`, `html`, `png`).
 
 For example:
+- **`text/plain`**: Describes HTML text data (web page content).
 - **`text/html`**: Describes HTML text data (web page content).
 - **`image/png`**: Indicates an image in PNG format.
 - **`application/json`**: Specifies data in JSON format.
