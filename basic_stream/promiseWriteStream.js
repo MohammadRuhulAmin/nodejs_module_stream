@@ -1,5 +1,6 @@
 import * as fs from "node:fs/promises"
 
+
 class writeStream{
     constructor(filepath,operation){
         this.filepath = filepath;
