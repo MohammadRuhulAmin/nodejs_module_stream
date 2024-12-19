@@ -22,6 +22,5 @@ console.log(memoryContainer[3])
 
 console.log(memoryContainer.toString('hex'))
 
-
 const buff = Buffer.from([0x48,0x69,0x21])
 console.log(buff.toString())
