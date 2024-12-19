@@ -7,6 +7,7 @@ class ReadStream{
         this.filepathWrite = filepathWrite
         this.operationWrite = operationWrite
     }
+    /** */
     async fileReadStream(){
         const fileHandleRead = await fs.open(this.filepathRead,this.operationRead)
         const fileHandleWrite = await fs.open(this.filepathWrite,this.operationWrite)
