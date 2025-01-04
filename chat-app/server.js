@@ -4,13 +4,21 @@ import net from "node:net"
 const clients = [];
 
 
-const server = net.createServer() /** It returns net.server */
-try{
+const server = net.createServer() ; /** It returns net.server object*/
+
     /** Actually if there are 100 people connected there will be 100 socket object ! */
     server.on("connection",(socket)=>{
         log("A new Connection added to the server")
         const clientId = clients.length + 1;
-        clients.push({id:clientId.toString(), socket})
+
+
+        
+
+
+        clients.map((client)=>{
+            client.socket.write(`user ${clientId} joined!`)
+        })
+
         socket.write(`id-${clientId}`)
         
         socket.on('data',(data)=>{ /** reading the stream */
@@ -23,15 +31,18 @@ try{
             const message = dataString.substring(dataString.indexOf("-message-")+9)
             clients.map((client)=>{
                 client.socket.write(`> user ${id}: ${message}`)
-
             })
         })
+        socket.on('error',(error)=>{log(error.message)})
+        socket.on("end",()=>{
+            clients.map((client)=>{
+                client.socket.write(`user ${clientId} left!`)
+            })
+        })
+        clients.push({id:clientId.toString(),socket})
     })
     
     server.listen(3008, "127.0.0.1",()=>{
         log("opened server on : ",server.address())
     })
-}
-catch(error){
-    log(error.message)
-}
+

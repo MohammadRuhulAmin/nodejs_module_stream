@@ -68,12 +68,14 @@ const socket =  net.createConnection(options, async ()=>{
     
 }) 
 
+socket.on('error', (err) => {
+    console.error('Socket error:', err.message);
+});
 
+// socket.on('close',()=>{
+//     log('closed!')
+// })
 
-socket.on('close',()=>{
-    log('closed!')
-})
-
-socket.on('end',()=>{
-    log('ended!')
-})
+// socket.on('end',()=>{
+//     log('ended!')
+// })
